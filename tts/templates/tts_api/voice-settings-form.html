@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #333;
+        }
+
+        .btn-signin {
+            padding: 8px 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-demo {
+            padding: 10px 24px;
+            background: #0e0e0e;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 40px 60px;
+        }
+
+        .hero-title {
+            font-size: 72px;
+            font-weight: 900;
+            color: #000;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            max-width: 900px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #666;
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .scroll-indicator {
+            margin-top: 60px;
+            font-size: 14px;
+            color: #999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border-left: 2px solid #999;
+            border-bottom: 2px solid #999;
+            transform: rotate(-45deg);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) rotate(-45deg);
+            }
+            40% {
+                transform: translateY(10px) rotate(-45deg);
+            }
+            60% {
+                transform: translateY(5px) rotate(-45deg);
+            }
+        }
+
+        /* App Section */
+        .app-section {
+            position:relative;
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+        }
+
+        .text-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            flex: 1;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            width: 320px;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .model-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .model-select:hover {
+            border-color: #000000;
+        }
+
+        .model-select:focus {
+            outline: none;
+            border-color: #000000;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #000000 0%, #ffffff 100%);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 11px;
+            color: #999;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: #e0e0e0;
+            outline: none;
+            
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #000000;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #000000;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 300px;
+            transition: all 0.3s;
+        }
+        .subclass {
+            text-align: center;
+            font-size: 50px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 40px;
+            margin-top: 20px;
+        }
+
+        textarea:hover {
+            border-color: #000000;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #000000;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #000000 0%, #ffffff 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        .app-header{
+            position: absolute;           
+            top: 0; left: 0; right: 0;
+            z-index: 2;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(9, 10, 17, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .generate-btn {
+        width:100%; padding:14px 18px; border-radius:10px; border:none;
+        background: linear-gradient(90deg, #111, #eee);
+        color:#fff; font-weight:700; cursor:pointer;
+        }
+        .generate-btn[disabled] { opacity:.6; cursor:not-allowed; }
+
+        /* Status message */
+        .status { min-height:20px; font-size:.95rem; }
+
+        /* Settings (keep simple; white bg + black text) */
+        .settings { display:grid; grid-template-columns:1fr; gap:10px; margin-top:6px; }
+        .sett-label { font-weight:600; }
+        .sett-input, .sett-range {
+        width:100%; padding:8px; background:#fff; color:#000; border:1px solid #111; border-radius:8px;
+        }    
+        .value-display {
+            font-size: 13px;
+            font-weight: 600;
+            color: #151516;
+        }
+        .app-Tail{
+            margin-top: 40px;
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            text-align: center; padding: 0px;
+        }
+        .color-slide {
+            accent-color: #000; 
+        }
+        .subclass-Tail {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 40px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 42px;
+            }
+
+            .main-wrapper {
+                flex-direction: column;
+            }
+
+            .settings-container {
+                width: 100%;
+            }
+
+            .nav {
+                display: none;
+            }
+        }  
+        .hint {
+            display: block;
+            margin-top: 0.4rem;
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+       
+        .audio-container {
+        display:flex; align-items:center; gap:12px;
+        padding:12px; border:1px solid #ddd; border-radius:10px; background:#f7f7f7;
+        transform:translateY(-6px) scale(.98); opacity:0; pointer-events:none;
+        transition:transform .18s ease, opacity .18s ease;
+        }
+        .audio-container.visible {
+        transform:translateY(0) scale(1); opacity:1; pointer-events:auto;
+        }
+        .audio-player { width:100%; max-width:420px; }
+        .audio-download { font-weight:600; text-decoration:none; border-bottom:1px dotted #000; }
+        /* Custom Dropdown Styles */
+        .select-wrap { 
+            position: relative; 
+            width: 100%; 
+        }
+        
+        .voice-select {
+            width: 100%; 
+            height: 44px;
+            padding: 10px 40px 10px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 12px center;
+            color: #000; 
+            line-height: 1.2; 
+            font-size: 14px;
+            transition: all .2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }  
+   
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">VoiceAI</div>
+        <nav class="nav">
+            <a href="#platform">Platform</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#templates">Templates</a>
+            <a href="#enterprise">Enterprise</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#contact">Contact</a>
+            <a href="#" class="btn-signin">Sign in</a>
+            <a href="#app" class="btn-demo">Try it now →</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <h1 class="hero-title">Voice synthesis made simple with AI</h1>
+        <p class="hero-subtitle">Transform any text into natural-sounding speech with advanced AI technology and get results within seconds with full customization control</p>
+        <div class="scroll-indicator" onclick="document.getElementById('app').scrollIntoView()">
+            <span>Scroll to try</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- App Section -->
+    <section class="app-section" id="app">
+        <div class="app-header">
+            <h1 class="subclass"> Try Here </h1>
+        </div>
+        <div class="main-wrapper">
+            <div class="text-container">
+                <h2>Text to Speech</h2>
+                <form id="voiceForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <textarea id="text" placeholder="Enter your text here..." required></textarea>
+                    </div>
+                    <div id="status" class="status"></div>
+                    <div id="audioContainer" class="audio-container" hidden>
+                        <audio id="player" controls preload="metadata" class="audio-player"></audio>
+                        
+                    </div>
+                    <button id="submitBtn" type="submit" class="generate-btn">Generate Speech</button>
+                </form>
+            </div>
+
+            <div class="settings-container">
+                <h2>Settings</h2>
+                
+                <div class="form-group">
+                    <label for="voice" class="label">Model Voice</label>
+                    <div class="select-wrap">
+                    <select id="voice" name="voice_name" class="voice-select" >
+                        {% for v in voices %}
+                            <option value="{{ v|escape }}">{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <small class="hint">GB for British Accent — US for American Accent</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="Volume">
+                        Volume
+                        <span class="value-display" id="VolumeValue">1.0x</span>
+                    </label>
+                    <div class="slider-container">
+                        <div class="slider-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                        <input class ="color-slide" type="range" id="Volume" min="0.5" max="1.5" step="0.05" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="LengthScale">
+                        Length Scale
+                        <span class="value-display" id="LengthScaleValue">1.0x</span>
+                    </label>
+                    <div class="slider-container">
+                        <div class="slider-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                        <input class="color-slide" type="range" id="LengthScale" min="0" max="1.5" step="0.05" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="NoiseScale">
+                        Noise Scale
+                        <span class="value-display" id="NoiseScaleValue">1.0x</span>
+                    </label>
+                    <div class="slider-container">
+                        <div class="slider-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                        <input class="color-slide" type="range" id="NoiseScale" min="0" max="1.5" step="0.05" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="NoisewScale">
+                        Noise w Scale
+                        <span class="value-display" id="NoisewScaleValue">1.0x</span>
+                    </label>
+                    <div class="slider-container">
+                        <div class="slider-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                        <input class="color-slide" type="range" id="NoisewScale" min="0" max="1.5" step="0.05" value="0.2">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-Tail">
+            <h1 class="subclass-Tail"> Made By NAIM 💪🏻 </h1>
+        </div>
+    </section>
+
+    <script>
+    const volumeSlider = document.getElementById('Volume');
+    const lengthscaleSlider = document.getElementById('LengthScale');
+    const noisescaleSlider = document.getElementById('NoiseScale');
+    const noisewscaleSlider = document.getElementById('NoisewScale');
+
+    const volumeValue = document.getElementById('VolumeValue');
+    const lengthscaleValue = document.getElementById('LengthScaleValue');
+    const noisescaleValue = document.getElementById('NoiseScaleValue');
+    const noisewscaleValue = document.getElementById('NoisewScaleValue');
+
+    const form = document.getElementById('voiceForm');
+    const status = document.getElementById('status');
+    const btn = document.getElementById('submitBtn');
+    const player = document.getElementById('player');
+    const audioContainer = document.getElementById('audioContainer');
+    const voiceSel = document.getElementById('voice');
+
+    [ [volumeSlider, volumeValue],
+        [lengthscaleSlider, lengthscaleValue],
+        [noisescaleSlider, noisescaleValue],
+        [noisewscaleSlider, noisewscaleValue]
+    ].forEach(([sl,v]) => sl.addEventListener('input', e => v.textContent = e.target.value + 'x'));
+
+    function getCookie(name){
+        let v = null;
+        if (document.cookie && document.cookie !== '') {
+        for (const c of document.cookie.split(';')) {
+            const cookie = c.trim();
+            if (cookie.startsWith(name + '=')) { v = decodeURIComponent(cookie.slice(name.length + 1)); break; }
+        }
+        }
+        return v;
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        btn.disabled = true;
+        status.textContent = 'Generating…';
+
+        const csrftoken = getCookie('csrftoken');
+
+        const fd = new FormData();
+        fd.append('text', document.getElementById('text').value);
+        fd.append('voice_name', voiceSel.value);
+        fd.append('volume', document.getElementById('Volume').value);
+        fd.append('length_scale', document.getElementById('LengthScale').value);
+        fd.append('noise_scale', document.getElementById('NoiseScale').value);
+        fd.append('noise_w_scale', document.getElementById('NoisewScale').value);
+
+        try {
+        const resp = await fetch("{% url 'get_audio' %}", {
+            method: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            body: fd
+        });
+
+        if (!resp.ok) {
+            status.textContent = 'Error: ' + resp.status + ' ' + (await resp.text());
+            return;
+        }
+
+        const ct = resp.headers.get('Content-Type') || '';
+        const ext = (ct.includes('mpeg') || ct.includes('mp3')) ? 'mp3' : 'wav';
+
+        const blob = await resp.blob();
+        const url = URL.createObjectURL(blob);
+
+        // cleanup previous object URL, if any
+        if (player.dataset.url) { try { URL.revokeObjectURL(player.dataset.url); } catch(_){} }
+
+        player.src = url;
+        player.dataset.url = url;  // remember for next cleanup
+
+
+        audioContainer.hidden = false;
+        void audioContainer.offsetWidth; // reflow for transition
+        audioContainer.classList.add('visible');
+
+        try { await player.play(); } catch(_) {}
+        status.textContent = ' ';
+        } catch (err) {
+        status.textContent = 'Request failed: ' + err;
+        } finally {
+        btn.disabled = false;
+        }
+    });
+
+    // Optional: show ~3 visible options with scroll on focus
+    voiceSel.addEventListener('focus', () => {
+        voiceSel.size = Math.min(3, voiceSel.options.length);
+        voiceSel.classList.add('expanded');
+    });
+    voiceSel.addEventListener('blur', () => {
+        voiceSel.size = 1;
+        voiceSel.classList.remove('expanded');
+    });
+    voiceSel.addEventListener('keydown', (e) => { if (e.key === 'Escape') voiceSel.blur(); });
+    </script>
+
+</body>
+</html>

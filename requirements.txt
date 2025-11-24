@@ -1,0 +1,4 @@
+django 
+djangorestframework
+piper-tts>=0.14.5
+pymysql>=1.1

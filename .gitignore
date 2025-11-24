@@ -1,0 +1,107 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+develop-eggs/
+*.egg-info/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg
+MANIFEST
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env/
+.env.*
+
+# Pipenv
+Pipfile.lock
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+media
+staticfiles
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PyCharm
+.idea/
+*.iml
+
+# mypy
+.mypy_cache/
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# temporary files
+*.tmp
+*.temp
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Coverage, profiling
+coverage.xml
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# SSH keys
+id_rsa
+id_rsa.pub
+# binary voice files 
+tts/tts_api/voices/*.onnx
+tts/tts_api/voices/*.onnx.json
+# End of file
