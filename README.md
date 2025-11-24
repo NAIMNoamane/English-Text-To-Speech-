@@ -1,6 +1,7 @@
-**Text-To-Speech (TTS) — Projet Django**
-
-Ce dépôt contient une petite application Django qui convertit du texte anglais en audio à l'aide de modèles Piper (fichiers `.onnx`). L'application expose une page web de démonstration et une API REST pour générer et récupérer l'audio.
+<H1 align="center">Text-To-Speech (TTS) — Django Project</H1>
+<img src="/tts/images/Interface.png">
+<img src="/tts/images/Interface2.png">
+Le dépôt contient une petite application Django qui convertit du texte anglais en audio à l'aide de modèles Piper (fichiers `.onnx`). L'application expose une page web de démonstration et une API REST pour générer et récupérer l'audio.
 
 **Prérequis**
 - Python 3.13 (le projet utilise `Pipfile` / `pipenv`) ou un environnement virtuel équivalent
