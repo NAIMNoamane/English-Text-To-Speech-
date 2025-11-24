@@ -1,72 +1,71 @@
 <H1 align="center">Text-To-Speech (TTS) — Django Project</H1>
-<img src="/tts/images/Interface.png">
-<img src="/tts/images/Interface2.png">
-Le dépôt contient une petite application Django qui convertit du texte anglais en audio à l'aide de modèles Piper (fichiers `.onnx`). L'application expose une page web de démonstration et une API REST pour générer et récupérer l'audio.
+<p align="center"> 
+  <b>Text To Speech Application For Educational Purposes and Pedagogy matters</b></p>
+<p align="center">
+<p align="center">
+  
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/Django-5.1-092E20?logo=django&logoColor=white" />
+  <img src="https://img.shields.io/badge/DRF-3.15-EF4444?logo=django&logoColor=white" />
+  <img src="https://img.shields.io/badge/Piper%20TTS-0.0.2-0EA5E9" />
+</p>
 
-**Prérequis**
-- Python 3.13 (le projet utilise `Pipfile` / `pipenv`) ou un environnement virtuel équivalent
-- `pipenv` (optionnel) ou `venv` + `pip`
-- Sur Windows : activez PowerShell et assurez-vous que la variable d'environnement `PATH` contient l'exécutable Python
+---
+<p align="center">
+  <img src="/tts/images/Interface.png" width="120%" />
+  
+</p>
+<p align="center">
+  <img src="/tts/images/Interface2.png" width="120%" /></p>
+<h2><b>Project Overview</b></h2>
+The repository contains a small Django application that converts English text into audio using Piper models (.onnx files). The application exposes a demo web page and a REST API to generate and retrieve the audio.
 
-**Structure importante**
-- **App Django**: `tts_api/`
-- **Template de la page**: `templates/tts_api/tts_api.html`
-- **Fichiers voix (modèles)**: `tts_api/voices/` (ex.: `en_GB-aru-medium.onnx` et `en_GB-aru-medium.onnx.json`)
-- **Fichier de configuration Django**: `tts/tts/settings.py`
+<h2><b>Project Structure</b></h2>
 
-**Installation (avec pipenv — PowerShell)**
+<img width="223" height="280" alt="image" src="https://github.com/user-attachments/assets/3713a930-582c-4d6e-8334-3d7fe5f951be" />
+ 
+- <B>App Django</B>: tts_api/
+- <b>Template de la page</b>: templates/tts_api/tts_api.html
+- <b>Fichiers voix (modèles)</b>: tts_api/voices/ (ex.: "en_GB-aru-medium.onnx" et "en_GB-aru-medium.onnx.json")
+- <b>Fichier de configuration Django</b>: "tts/tts/settings.py"
 
-- Installer les dépendances et créer/actualiser l'environnement :
 
-```powershell
-pipenv install
+<h2><b>Requirements</b></h2>
+
+- First we need audio piper models, you can find it <a href="https://huggingface.co/rhasspy/piper-voices">here</a>.
+- Second run these commands in powershell
+
+
+```powershell 
+pipenv shell
+pipenv install -r requirements.txt
 ```
 
-- Si vous préférez `venv` + `pip` :
+<h2><b>Run Project</b></h2>
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-# ou installer manuellement les paquets listés dans Pipfile
-```
-
-Remarque : certains paquets (ex. `piper`, `onnxruntime`) peuvent nécessiter des roues spécifiques pour votre plateforme. En cas d'erreurs d'installation, copiez/collez l'erreur ici et je vous aiderai.
-
-**Exécuter le serveur**
-
-```powershell
-# depuis le dossier contenant manage.py (ex: texttospeech/tts)
+# From the directory containing manage.py (ex: texttospeech/tts)
 pipenv run python manage.py runserver
-# ou si vous utilisez venv activé
-python manage.py runserver
 ```
 
-Ouvrez dans le navigateur : `http://127.0.0.1:8000/api/`
+Open the browser on : `http://127.0.0.1:8000/api/`
 
-**Pages et endpoints**
-- Page de démonstration (formulaire) : `GET /api/` — affiche le formulaire pour entrer le texte, choisir la voix et régler les paramètres audio.
-- API de génération audio : `POST /api/get_audio/` — reçoit les champs form-data suivants :
-  - `text` : texte à convertir (requis)
-  - `voice_name` : nom de la voix (requis) — options disponibles depuis la page
-  - `volume` (float) — défaut `1.0`
-  - `length_scale` (float) — défaut `1.0`
-  - `noise_scale` (float) — défaut `0.667`
-  - `noise_w_scale` (float) — défaut `0.8`
+**Endpoint 'API'**
+- **Demo page (form)**: `GET /api/` — displays the form to enter text, choose the voice and adjust audio parameters.
+- **Audio generation API**: `POST /api/get_audio/` — expects the following `form-data` fields:
+  - `text`: text to convert (**required**)
+  - `voice_name`: voice name (**required**) — options available from the page
+  - `volume` (float) — default `1.0`
+  - `length_scale` (float) — default `1.0`
+  - `noise_scale` (float) — default `0.667`
+  - `noise_w_scale` (float) — default `0.8`
 
-Exemple `curl` pour générer et sauvegarder la sortie :
+### How to add / manage voices
 
-```powershell
-curl -X POST "http://127.0.0.1:8000/api/get_audio/" -F "text=Hello world" -F "voice_name=GB-Aru" --output sample.wav
-```
-
-La page web utilise JavaScript pour poster le formulaire et lire le `Blob` retourné dans un élément `<audio>`.
-
-**Comment ajouter / gérer des voix**
-- Placez les paires de fichiers modèle dans `tts_api/voices/` :
-  - le modèle ONNX : `en_US-xxx.onnx`
-  - le fichier JSON de configuration associé : `en_US-xxx.onnx.json`
-- Ajoutez la clé correspondante dans `tts_api/core_api.py` dans la constante `VOICE_PATHS` si vous voulez exposer un nouveau label sur la page.
+- Place the model file pairs in `tts_api/voices/`:
+  - ONNX model: `en_US-xxx.onnx`
+  - Associated JSON configuration file: `en_US-xxx.onnx.json`
+- Add the corresponding key in `tts_api/core_api.py` in the `VOICE_PATHS` constant if you want to expose a new label on the page.
 
 **Points importants du code**
 - `tts_api/core_api.py` :
@@ -88,14 +87,8 @@ La page web utilise JavaScript pour poster le formulaire et lire le `Blob` retou
   - sécuriser l'accès aux modèles et aux ressources
   - gérer la mise en file/limitation des requêtes (pour éviter surcharge mémoire CPU/GPU lors de la synthèse)
 
-**Contact / suite**
-- Si vous voulez que je génère automatiquement un modèle de voix, télécharge et place l'onnx + .json dans `tts_api/voices/` et je peux :
-  - ajouter l'entrée dans `VOICE_PATHS`
-  - fournir un exemple curl/JS personnalisé
-
 ---
 Fichier principal du projet : `manage.py`
 Template d'exemple : `templates/tts_api/tts_api.html`
 Voices folder : `tts_api/voices/` 
 
-Si vous voulez, j'ajoute aussi un petit script de test (exécutable séparément) qui appelle `core_api.text_to_speech()` hors du serveur pour vérifier la synthèse localement. Voulez-vous que je l'ajoute ?
